@@ -23,7 +23,10 @@ MCP Server for the Perplexity API.
     "command": "uvx",
     "args": [
       "mcp-server-perplexity"
-    ]
+    ],
+    "env": {
+      "PERPLEXITY_API_KEY": "your-perplexity-api-key"
+    }
   }
 }
 ```
