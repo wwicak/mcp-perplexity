@@ -2,6 +2,11 @@
 
 MCP Server for the Perplexity API.
 
+> :warning: **Limitations:**
+> - The Claude Desktop client may timeout if Perplexity processing takes too long
+> - This issue might be resolved if Claude Desktop implements support for long running operations and progress reporting in the future
+> - Implementation updates to handle these features will be made if they become available
+
 ## Components
 
 ### Tools
