@@ -1,6 +1,6 @@
 [project]
 name = "mcp-server-perplexity"
-version = "0.1.2"
+version = "0.2.3"
 description = "MCP Server for the Perplexity API."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -13,6 +13,10 @@ Repository = "https://github.com/tanigami/mcp-server-perplexity"
 [[project.authors]]
 name = "Hirofumi Tanigami"
 email = "tanigami@teps.io"
+
+[[project.authors]]
+name = "Daniel Riccio"
+email = "ricciodaniel98@gmail.com"
 
 [build-system]
 requires = [ "hatchling",]
