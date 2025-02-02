@@ -63,10 +63,11 @@ pipx install mcp-server-perplexity
 ```
 
 
-#### Configure Claude Desktop
+#### Configure your MCP Client
 
-- On macOS: `~/Library/Application\ Support/Claude/claude_desktop_config.json`
-- On Windows: `%APPDATA%/Claude/claude_desktop_config.json`
+To use this MCP server, you need to configure your MCP client to connect to it.  The configuration method will vary depending on your specific client.
+
+Below is an example configuration in JSON format.  **Refer to your MCP client's documentation for the exact configuration steps and format.**
 
 ```json
 "mcpServers": {
@@ -82,3 +83,9 @@ pipx install mcp-server-perplexity
   }
 }
 ```
+
+**Important notes:**
+
+- Replace `"your-perplexity-api-key"` with your actual Perplexity API key.
+- The `"PERPLEXITY_MODEL": "sonar-pro"` line is optional. If you omit it, the server will use the default Perplexity model.  You can change `"sonar-pro"` to other supported models if needed.
+- Consult your MCP client's documentation for details on where to place this configuration and any client-specific settings.
