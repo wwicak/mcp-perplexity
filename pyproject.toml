@@ -15,10 +15,6 @@ Homepage = "https://github.com/daniel-lxs/mcp-perplexity"
 Repository = "https://github.com/daniel-lxs/mcp-perplexity"
 
 [[project.authors]]
-name = "Hirofumi Tanigami"
-email = "tanigami@teps.io"
-
-[[project.authors]]
 name = "Daniel Riccio"
 email = "ricciodaniel98@gmail.com"
 
