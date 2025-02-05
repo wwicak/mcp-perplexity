@@ -1,4 +1,4 @@
-from os import getenv
+import os
 from textwrap import dedent
 import json
 from collections import deque
@@ -13,37 +13,55 @@ import sqlite3
 from datetime import datetime
 import uuid
 
-PERPLEXITY_API_KEY = getenv("PERPLEXITY_API_KEY")
-PERPLEXITY_MODEL = getenv("PERPLEXITY_MODEL")
-PERPLEXITY_MODEL_ASK = getenv("PERPLEXITY_MODEL_ASK")
-PERPLEXITY_MODEL_CHAT = getenv("PERPLEXITY_MODEL_CHAT")
+PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
+PERPLEXITY_MODEL = os.getenv("PERPLEXITY_MODEL")
+PERPLEXITY_MODEL_ASK = os.getenv("PERPLEXITY_MODEL_ASK")
+PERPLEXITY_MODEL_CHAT = os.getenv("PERPLEXITY_MODEL_CHAT")
 PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
 
 haikunator = Haikunator()
-DB_PATH = "chats.db"
+DB_PATH = os.getenv("PERPLEXITY_DB_PATH", "chats.db")
 
 server = Server("mcp-server-perplexity")
 
 def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    c = conn.cursor()
-    
-    # Create chats table
-    c.execute('''CREATE TABLE IF NOT EXISTS chats
-                 (id TEXT PRIMARY KEY,
-                  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                  title TEXT)''')
-                 
-    # Create messages table
-    c.execute('''CREATE TABLE IF NOT EXISTS messages
-                 (id TEXT PRIMARY KEY,
-                  chat_id TEXT,
-                  role TEXT,
-                  content TEXT,
-                  timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-                  FOREIGN KEY(chat_id) REFERENCES chats(id))''')
-    conn.commit()
-    conn.close()
+    try:
+        # Create parent directories if needed
+        db_dir = os.path.dirname(DB_PATH)
+        if db_dir:  # Only create directories if path contains them
+            os.makedirs(db_dir, exist_ok=True)
+            
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+        
+        # Create tables with enhanced error handling
+        c.execute('''CREATE TABLE IF NOT EXISTS chats
+                     (id TEXT PRIMARY KEY,
+                      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      title TEXT)''')
+                     
+        c.execute('''CREATE TABLE IF NOT EXISTS messages
+                     (id TEXT PRIMARY KEY,
+                      chat_id TEXT,
+                      role TEXT,
+                      content TEXT,
+                      timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+                      FOREIGN KEY(chat_id) REFERENCES chats(id))''')
+        
+        # Verify table creation
+        c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('chats', 'messages')")
+        existing_tables = {row[0] for row in c.fetchall()}
+        if 'chats' not in existing_tables or 'messages' not in existing_tables:
+            raise RuntimeError("Failed to create database tables")
+            
+        conn.commit()
+    except sqlite3.Error as e:
+        raise RuntimeError(f"Database connection error: {str(e)}")
+    except Exception as e:
+        raise RuntimeError(f"Failed to initialize database at '{DB_PATH}': {str(e)}")
+    finally:
+        if 'conn' in locals():
+            conn.close()
 
 # Initialize database on startup
 init_db()
