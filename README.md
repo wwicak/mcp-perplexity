@@ -26,6 +26,14 @@ MCP Server for the Perplexity API.
 
 ### Installation
 
+#### Installing via Smithery
+
+To install Perplexity MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@daniel-lxs/mcp-perplexity):
+
+```bash
+npx -y @smithery/cli install @daniel-lxs/mcp-perplexity --client claude
+```
+
 #### Prerequisites
 
 - [Python 3.10+](https://www.python.org/downloads/)
