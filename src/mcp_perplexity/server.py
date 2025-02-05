@@ -15,6 +15,8 @@ import uuid
 
 PERPLEXITY_API_KEY = getenv("PERPLEXITY_API_KEY")
 PERPLEXITY_MODEL = getenv("PERPLEXITY_MODEL")
+PERPLEXITY_MODEL_ASK = getenv("PERPLEXITY_MODEL_ASK")
+PERPLEXITY_MODEL_CHAT = getenv("PERPLEXITY_MODEL_CHAT")
 PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
 
 haikunator = Haikunator()
@@ -100,7 +102,7 @@ async def handle_list_tools() -> list[types.Tool]:
     ]
 
 def generate_chat_id():
-    return haikunator.haikunate(token_length=0, delimiter='-').lower()
+    return haikunator.haikunate(token_length=100, delimiter='-').lower()
 
 def store_message(chat_id, role, content, title=None):
     conn = sqlite3.connect(DB_PATH)
@@ -169,7 +171,7 @@ async def handle_call_tool(
                         "Content-Type": "application/json",
                     },
                     json={
-                        "model": PERPLEXITY_MODEL,
+                        "model": PERPLEXITY_MODEL_ASK or PERPLEXITY_MODEL,
                         "messages": [
                             {"role": "system", "content": system_prompt},
                             {"role": "user", "content": arguments["query"]}
@@ -299,7 +301,7 @@ async def handle_call_tool(
                         "Content-Type": "application/json",
                     },
                     json={
-                        "model": PERPLEXITY_MODEL,
+                        "model": PERPLEXITY_MODEL_CHAT or PERPLEXITY_MODEL,
                         "messages": [
                             {"role": "system", "content": system_prompt},
                             *chat_history,
