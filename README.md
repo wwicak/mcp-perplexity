@@ -11,13 +11,15 @@ MCP Server for the Perplexity API.
 ### Tools
 
 - **ask_perplexity**: Request expert programming assistance through Perplexity. Focuses on coding solutions, error debugging, and technical explanations. Returns responses with source citations and alternative suggestions.
+- **chat_perplexity**: Maintains ongoing conversations with Perplexity AI. Creates new chats or continues existing ones with full history context. Returns chat ID for future continuation.
 
 ## Key Features
 
 - **Streaming Responses with Progress Reporting:**  Provides a more interactive experience by streaming responses and reporting progress during long queries.
 - **Simplified Tool Parameters:** The `ask_perplexity` tool now only requires a `query` parameter, simplifying its usage.
-- **Model Configuration via Environment Variable:**  Allows you to specify the Perplexity model using the `PERPLEXITY_MODEL` environment variable for flexible model selection.
+- **Model Configuration via Environment Variable:**  Allows you to specify the Perplexity model using the `PERPLEXITY_MODEL` environment variable for flexible model selection.  You can also specify `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to use different models for the `ask_perplexity` and `chat_perplexity` tools, respectively.  These will override `PERPLEXITY_MODEL`.
 - **Improved Error Handling and Robustness:** Incorporates better error handling and more robust API interaction.
+- **Longer Chat IDs** Chat IDs are now longer.
 
 
 ## Quickstart
@@ -65,5 +67,6 @@ Below is an example configuration in JSON format:
 **Important notes:**
 - Replace `"your-perplexity-api-key"` with your actual Perplexity API key.
 - The `"PERPLEXITY_MODEL": "sonar-pro"` line is optional. If you omit it, the server will use the default Perplexity model.
+- You can also set `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to override `PERPLEXITY_MODEL` for the individual tools.
 - Consult your MCP client's documentation for details on where to place this configuration and any client-specific settings.
 - Use the [mcp-server-starter](https://github.com/daniel-lxs/mcp-server-starter) script to easily start the server.
