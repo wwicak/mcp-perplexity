@@ -77,4 +77,4 @@ Below is an example configuration in JSON format:
 - The `"PERPLEXITY_MODEL": "sonar-pro"` line is optional. If you omit it, the server will use the default Perplexity model.
 - You can also set `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to override `PERPLEXITY_MODEL` for the individual tools.
 - Consult your MCP client's documentation for details on where to place this configuration and any client-specific settings.
-- Use the [mcp-server-starter](https://github.com/daniel-lxs/mcp-server-starter) script to easily start the server.
+- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily start the server.
