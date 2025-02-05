@@ -1,6 +1,6 @@
 # Perplexity MCP Server
 
-[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-server-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-server-perplexity)
+[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-perplexity)
 
 MCP Server for the Perplexity API.
 
@@ -39,27 +39,27 @@ To ensure you have the most up-to-date version with the latest features and fixe
 
 ```bash
 # Clone the repository
-git clone https://github.com/daniel-lxs/mcp-server-perplexity.git
-cd mcp-server-perplexity
+git clone https://github.com/daniel-lxs/mcp-perplexity.git
+cd mcp-perplexity
 
 # Build the package
 hatch build
 
 # Install using pipx from the local distribution
-pipx install dist/mcp_server_perplexity-0.2.3-py3-none-any.whl
+pipx install dist/mcp_perplexity-0.2.5-py3-none-any.whl
 ```
 
 **Explanation for local development install:**
 
 - `hatch build`: This command uses `hatch` (the build system specified in `pyproject.toml`) to build the package. It creates a distribution-ready `.whl` file in the `dist` directory.
-- `pipx install dist/mcp_server_perplexity-0.2.3-py3-none-any.whl`: This command then installs the server using `pipx` from the locally built `.whl` file. This ensures you are running the code from your local development environment.
+- `pipx install dist/mcp_perplexity-0.2.5-py3-none-any.whl`: This command then installs the server using `pipx` from the locally built `.whl` file. This ensures you are running the code from your local development environment.
 
 **2. Install directly from PyPI (Potentially outdated):**
 
 This method installs the released version from the Python Package Index.  **Note that this version might not be the most current.**
 
 ```bash
-pipx install mcp-server-perplexity
+pipx install mcp-perplexity
 ```
 
 
@@ -74,7 +74,7 @@ Below is an example configuration in JSON format.  **Refer to your MCP client's 
   "Perplexity": {
     "command": "uvx",
     "args": [
-      "mcp-server-perplexity"
+      "mcp-perplexity"
     ],
     "env": {
       "PERPLEXITY_API_KEY": "your-perplexity-api-key",

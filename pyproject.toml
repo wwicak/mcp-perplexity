@@ -1,5 +1,5 @@
 [project]
-name = "mcp-server-perplexity"
+name = "mcp-perplexity"
 version = "0.2.5"
 description = "MCP Server for the Perplexity API."
 readme = "README.md"
@@ -11,8 +11,8 @@ dependencies = [
 ]
 
 [project.urls]
-Homepage = "https://github.com/daniel-lxs/mcp-server-perplexity"
-Repository = "https://github.com/daniel-lxs/mcp-server-perplexity"
+Homepage = "https://github.com/daniel-lxs/mcp-perplexity"
+Repository = "https://github.com/daniel-lxs/mcp-perplexity"
 
 [[project.authors]]
 name = "Hirofumi Tanigami"
@@ -27,4 +27,4 @@ requires = [ "hatchling",]
 build-backend = "hatchling.build"
 
 [project.scripts]
-mcp-server-perplexity = "mcp_server_perplexity:main"
+mcp-perplexity = "mcp_perplexity:main"
