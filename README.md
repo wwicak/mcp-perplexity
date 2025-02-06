@@ -1,8 +1,8 @@
 # Perplexity MCP Server
 
-[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-perplexity)
-
 MCP Server for the Perplexity API.
+
+[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-perplexity)
 
 [![PyPI Publish](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml/badge.svg)](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml)
 
@@ -19,12 +19,9 @@ MCP Server for the Perplexity API.
 
 ## Key Features
 
-- **Streaming Responses with Progress Reporting:**  Provides a more interactive experience by streaming responses and reporting progress during long queries.
-- **Simplified Tool Parameters:** The `ask_perplexity` tool now only requires a `query` parameter, simplifying its usage.
-- **Model Configuration via Environment Variable:**  Allows you to specify the Perplexity model using the `PERPLEXITY_MODEL` environment variable for flexible model selection.  You can also specify `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to use different models for the `ask_perplexity` and `chat_perplexity` tools, respectively.  These will override `PERPLEXITY_MODEL`.
-- **Improved Error Handling and Robustness:** Incorporates better error handling and more robust API interaction.
-- **Longer Chat IDs** Chat IDs are now longer.
-
+- **Model Configuration via Environment Variable:**  Allows you to specify the Perplexity model using the `PERPLEXITY_MODEL` environment variable for flexible model selection.  You can also specify `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to use different models for the `ask_perplexity` and `chat_perplexity` tools, respectively.  These will override `PERPLEXITY_MODEL`. You can check which models are available on the [Perplexity](https://docs.perplexity.ai/guides/model-cards) documentation.
+- **Persistent Chat History:** The `chat_perplexity` tool maintains ongoing conversations with Perplexity AI. Creates new chats or continues existing ones with full history context. Returns chat ID for future continuation.
+- **Streaming Responses with Progress Reporting:** Uses progress reporting to prevent timeouts on slow responses.
 
 ## Quickstart
 
@@ -78,7 +75,6 @@ Below is an example configuration in JSON format:
 
 **Important notes:**
 - Replace `"your-perplexity-api-key"` with your actual Perplexity API key.
-- The `"PERPLEXITY_MODEL": "sonar-pro"` line is optional. If you omit it, the server will use the default Perplexity model.
 - You can also set `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to override `PERPLEXITY_MODEL` for the individual tools.
 - Consult your MCP client's documentation for details on where to place this configuration and any client-specific settings.
-- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily start the server.
+- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE.
