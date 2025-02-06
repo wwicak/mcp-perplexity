@@ -132,7 +132,7 @@ async def handle_list_tools() -> list[types.Tool]:
 
 
 def generate_chat_id():
-    return haikunator.haikunate(token_length=100, delimiter='-').lower()
+    return haikunator.haikunate(token_length=2, delimiter='-').lower()
 
 
 def store_message(chat_id, role, content, title=None):
