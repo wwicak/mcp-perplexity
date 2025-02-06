@@ -4,6 +4,8 @@
 
 MCP Server for the Perplexity API.
 
+[![PyPI Publish](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml/badge.svg)](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml)
+
 <a href="https://glama.ai/mcp/servers/hchfq9bydq"><img width="380" height="200" src="https://glama.ai/mcp/servers/hchfq9bydq/badge" alt="Perplexity Server MCP server" /></a>
 
 ## Components
