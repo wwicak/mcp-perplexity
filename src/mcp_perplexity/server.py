@@ -21,6 +21,12 @@ PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
 
 haikunator = Haikunator()
 DB_PATH = os.getenv("PERPLEXITY_DB_PATH", "chats.db")
+SYSTEM_PROMPT = """You are an expert assistant providing accurate answers to technical questions. 
+            Your responses must:
+            1. Be based on the most relevant web sources
+            2. Include source citations for all factual claims
+            3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
+            4. Prioritize technical accuracy, especially for programming-related questions"""
 
 server = Server("mcp-server-perplexity")
 
@@ -178,7 +184,6 @@ async def handle_call_tool(
                     progress_token=progress_token,
                     progress=0,
                     total=initial_estimate,
-                    message="Starting request..."
                 )
 
             async with httpx.AsyncClient() as client:
@@ -235,7 +240,6 @@ async def handle_call_tool(
                                             progress_token=progress_token,
                                             progress=progress_counter,
                                             total=total_estimate,
-                                            message=f"Received {progress_counter} tokens..."
                                         )
                             except json.JSONDecodeError:
                                 continue
@@ -258,7 +262,6 @@ async def handle_call_tool(
                         progress_token=progress_token,
                         progress=progress_counter,
                         total=progress_counter,  # Set final total to actual tokens received
-                        message="Complete"
                     )
 
                 return [
@@ -274,7 +277,6 @@ async def handle_call_tool(
                     progress_token=progress_token,
                     progress=progress_counter if 'progress_counter' in locals() else 0,
                     total=progress_counter if 'progress_counter' in locals() else 0,
-                    message=f"Error: {str(e)}"
                 )
             raise RuntimeError(f"API error: {str(e)}")
 
@@ -290,9 +292,12 @@ async def handle_call_tool(
         chat_history = get_chat_history(chat_id)
         
         system_prompt = dedent("""
-            You are maintaining an ongoing conversation. Previous messages are provided as context.
-            Respond appropriately to continue the dialogue naturally.
-            Include source citations where applicable.
+            You are an expert assistant providing accurate answers to technical questions. 
+            Your responses must:
+            1. Be based on the most relevant web sources
+            2. Include source citations for all factual claims
+            3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
+            4. Prioritize technical accuracy, especially for programming-related questions
             """).strip()
         
         # Initialize progress tracking with dynamic estimation
@@ -308,7 +313,6 @@ async def handle_call_tool(
                     progress_token=progress_token,
                     progress=0,
                     total=initial_estimate,
-                    message="Starting chat request..."
                 )
 
             async with httpx.AsyncClient() as client:
@@ -365,7 +369,6 @@ async def handle_call_tool(
                                             progress_token=progress_token,
                                             progress=progress_counter,
                                             total=total_estimate,
-                                            message=f"Received {progress_counter} tokens..."
                                         )
                             except json.JSONDecodeError:
                                 continue
@@ -395,7 +398,6 @@ async def handle_call_tool(
                         progress_token=progress_token,
                         progress=progress_counter,
                         total=progress_counter,  # Set final total to actual tokens received
-                        message="Chat response complete"
                     )
 
                 return [
@@ -411,7 +413,6 @@ async def handle_call_tool(
                     progress_token=progress_token,
                     progress=progress_counter if 'progress_counter' in locals() else 0,
                     total=progress_counter if 'progress_counter' in locals() else 0,
-                    message=f"Error: {str(e)}"
                 )
             raise RuntimeError(f"API error: {str(e)}")
             
