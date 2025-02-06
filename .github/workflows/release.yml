@@ -40,10 +40,13 @@ jobs:
 
     - name: Store the distribution packages
       if: steps.release.outputs.released == 'true'
-      uses: actions/upload-artifact@v3
+      uses: actions/upload-artifact@v4
       with:
         name: python-package-distributions
         path: dist/
+        retention-days: 5
+        compression-level: 9
+        if-no-files-found: error
 
     # Trigger the PyPI publish workflow if a new release was created
     - name: Trigger PyPI publish workflow
