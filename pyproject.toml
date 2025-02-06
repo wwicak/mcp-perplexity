@@ -30,4 +30,3 @@ version_variable = ["pyproject.toml:version"]
 branch = "main"
 upload_to_pypi = false
 upload_to_release = true
-build_command = "hatch build"
