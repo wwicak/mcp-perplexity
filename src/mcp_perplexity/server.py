@@ -22,13 +22,14 @@ PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
 haikunator = Haikunator()
 DB_PATH = os.getenv("PERPLEXITY_DB_PATH", "chats.db")
 SYSTEM_PROMPT = """You are an expert assistant providing accurate answers to technical questions. 
-            Your responses must:
-            1. Be based on the most relevant web sources
-            2. Include source citations for all factual claims
-            3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
-            4. Prioritize technical accuracy, especially for programming-related questions"""
+Your responses must:
+1. Be based on the most relevant web sources
+2. Include source citations for all factual claims
+3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
+4. Prioritize technical accuracy, especially for programming-related questions"""
 
 server = Server("mcp-server-perplexity")
+
 
 def init_db():
     try:
@@ -36,16 +37,16 @@ def init_db():
         db_dir = os.path.dirname(DB_PATH)
         if db_dir:  # Only create directories if path contains them
             os.makedirs(db_dir, exist_ok=True)
-            
+
         conn = sqlite3.connect(DB_PATH)
         c = conn.cursor()
-        
+
         # Create tables with enhanced error handling
         c.execute('''CREATE TABLE IF NOT EXISTS chats
                      (id TEXT PRIMARY KEY,
                       created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       title TEXT)''')
-                     
+
         c.execute('''CREATE TABLE IF NOT EXISTS messages
                      (id TEXT PRIMARY KEY,
                       chat_id TEXT,
@@ -53,24 +54,28 @@ def init_db():
                       content TEXT,
                       timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                       FOREIGN KEY(chat_id) REFERENCES chats(id))''')
-        
+
         # Verify table creation
-        c.execute("SELECT name FROM sqlite_master WHERE type='table' AND name IN ('chats', 'messages')")
+        c.execute(
+            "SELECT name FROM sqlite_master WHERE type='table' AND name IN ('chats', 'messages')")
         existing_tables = {row[0] for row in c.fetchall()}
         if 'chats' not in existing_tables or 'messages' not in existing_tables:
             raise RuntimeError("Failed to create database tables")
-            
+
         conn.commit()
     except sqlite3.Error as e:
         raise RuntimeError(f"Database connection error: {str(e)}")
     except Exception as e:
-        raise RuntimeError(f"Failed to initialize database at '{DB_PATH}': {str(e)}")
+        raise RuntimeError(
+            f"Failed to initialize database at '{DB_PATH}': {str(e)}")
     finally:
         if 'conn' in locals():
             conn.close()
 
+
 # Initialize database on startup
 init_db()
+
 
 @server.list_tools()
 async def handle_list_tools() -> list[types.Tool]:
@@ -125,34 +130,38 @@ async def handle_list_tools() -> list[types.Tool]:
         )
     ]
 
+
 def generate_chat_id():
     return haikunator.haikunate(token_length=100, delimiter='-').lower()
+
 
 def store_message(chat_id, role, content, title=None):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    
+
     # Create chat if it doesn't exist
     c.execute("INSERT OR IGNORE INTO chats (id, title) VALUES (?, ?)",
               (chat_id, title))
-    
+
     # Store message
     c.execute("INSERT INTO messages (id, chat_id, role, content) VALUES (?, ?, ?, ?)",
               (str(uuid.uuid4()), chat_id, role, content))
-    
+
     conn.commit()
     conn.close()
+
 
 def get_chat_history(chat_id):
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
-    
+
     c.execute('''SELECT role, content FROM messages 
                  WHERE chat_id = ? 
                  ORDER BY timestamp''', (chat_id,))
     history = [{"role": row[0], "content": row[1]} for row in c.fetchall()]
     conn.close()
     return history
+
 
 @server.call_tool()
 async def handle_call_tool(
@@ -162,15 +171,8 @@ async def handle_call_tool(
     progress_token = context.meta.progressToken if context.meta else None
 
     if name == "ask_perplexity":
-        system_prompt = dedent("""
-            You are an expert assistant providing accurate answers using real-time web searches. 
-            Your responses must:
-            1. Be based on the most relevant web sources
-            2. Include source citations for all factual claims
-            3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
-            4. Prioritize technical accuracy, especially for programming-related questions
-        """).strip()
-        
+        system_prompt = dedent(SYSTEM_PROMPT).strip()
+
         try:
             # Initialize progress tracking with dynamic estimation
             initial_estimate = 1000
@@ -208,7 +210,7 @@ async def handle_call_tool(
                 citations = []
                 full_response = ""
                 usage = {}
-                
+
                 async for chunk in response.aiter_text():
                     for line in chunk.split('\n'):
                         line = line.strip()
@@ -220,9 +222,10 @@ async def handle_call_tool(
                                 if "citations" in data:
                                     citations.extend(data["citations"])
                                 if data.get("choices"):
-                                    content = data["choices"][0].get("delta", {}).get("content", "")
+                                    content = data["choices"][0].get(
+                                        "delta", {}).get("content", "")
                                     full_response += content
-                                    
+
                                     # Update progress with dynamic estimation
                                     tokens_in_chunk = len(content.split())
                                     progress_counter += tokens_in_chunk
@@ -231,9 +234,10 @@ async def handle_call_tool(
 
                                     # Update total estimate every 5 chunks
                                     if chunk_count % 5 == 0 and chunk_sizes:
-                                        avg_chunk_size = sum(chunk_sizes) / len(chunk_sizes)
-                                        total_estimate = max(initial_estimate, 
-                                                          int(progress_counter + avg_chunk_size * 10))
+                                        avg_chunk_size = sum(
+                                            chunk_sizes) / len(chunk_sizes)
+                                        total_estimate = max(initial_estimate,
+                                                             int(progress_counter + avg_chunk_size * 10))
 
                                     if progress_token:
                                         await context.session.send_progress_notification(
@@ -246,7 +250,8 @@ async def handle_call_tool(
 
                 # Format citations with numbered list starting from 1
                 unique_citations = list(dict.fromkeys(citations))
-                citation_list = "\n".join(f"{i}. {url}" for i, url in enumerate(unique_citations, start=1))
+                citation_list = "\n".join(
+                    f"{i}. {url}" for i, url in enumerate(unique_citations, start=1))
 
                 response_text = (
                     f"{full_response}\n\n"
@@ -266,7 +271,7 @@ async def handle_call_tool(
 
                 return [
                     types.TextContent(
-                        type="text", 
+                        type="text",
                         text=response_text
                     )
                 ]
@@ -287,26 +292,19 @@ async def handle_call_tool(
 
         # Store user message
         store_message(chat_id, "user", user_message, title)
-        
+
         # Get full chat history
         chat_history = get_chat_history(chat_id)
-        
-        system_prompt = dedent("""
-            You are an expert assistant providing accurate answers to technical questions. 
-            Your responses must:
-            1. Be based on the most relevant web sources
-            2. Include source citations for all factual claims
-            3. If no relevant results are found, suggest 2-3 alternative search queries that might better uncover the needed information
-            4. Prioritize technical accuracy, especially for programming-related questions
-            """).strip()
-        
+
+        system_prompt = dedent(SYSTEM_PROMPT).strip()
+
         # Initialize progress tracking with dynamic estimation
         initial_estimate = 1000
         progress_counter = 0
         total_estimate = initial_estimate
         chunk_sizes = deque(maxlen=10)  # Store last 10 chunk sizes
         chunk_count = 0
-        
+
         try:
             if progress_token:
                 await context.session.send_progress_notification(
@@ -337,7 +335,7 @@ async def handle_call_tool(
                 citations = []
                 full_response = ""
                 usage = {}
-                
+
                 async for chunk in response.aiter_text():
                     for line in chunk.split('\n'):
                         line = line.strip()
@@ -349,9 +347,10 @@ async def handle_call_tool(
                                 if "citations" in data:
                                     citations.extend(data["citations"])
                                 if data.get("choices"):
-                                    content = data["choices"][0].get("delta", {}).get("content", "")
+                                    content = data["choices"][0].get(
+                                        "delta", {}).get("content", "")
                                     full_response += content
-                                    
+
                                     # Update progress with dynamic estimation
                                     tokens_in_chunk = len(content.split())
                                     progress_counter += tokens_in_chunk
@@ -360,9 +359,10 @@ async def handle_call_tool(
 
                                     # Update total estimate every 5 chunks
                                     if chunk_count % 5 == 0 and chunk_sizes:
-                                        avg_chunk_size = sum(chunk_sizes) / len(chunk_sizes)
-                                        total_estimate = max(initial_estimate, 
-                                                          int(progress_counter + avg_chunk_size * 10))
+                                        avg_chunk_size = sum(
+                                            chunk_sizes) / len(chunk_sizes)
+                                        total_estimate = max(initial_estimate,
+                                                             int(progress_counter + avg_chunk_size * 10))
 
                                     if progress_token:
                                         await context.session.send_progress_notification(
@@ -375,17 +375,18 @@ async def handle_call_tool(
 
                 # Format citations with numbered list starting from 1
                 unique_citations = list(dict.fromkeys(citations))
-                citation_list = "\n".join(f"{i}. {url}" for i, url in enumerate(unique_citations, start=1))
+                citation_list = "\n".join(
+                    f"{i}. {url}" for i, url in enumerate(unique_citations, start=1))
 
                 # Store assistant response
                 store_message(chat_id, "assistant", full_response)
-                
+
                 # Format chat history
                 history_text = "\nChat History:\n"
                 for msg in chat_history:
                     role = "You" if msg["role"] == "user" else "Assistant"
                     history_text += f"\n{role}: {msg['content']}\n"
-                
+
                 response_text = (
                     f"Chat ID: {chat_id}\n"
                     f"{history_text}\n"
@@ -402,7 +403,7 @@ async def handle_call_tool(
 
                 return [
                     types.TextContent(
-                        type="text", 
+                        type="text",
                         text=response_text
                     )
                 ]
@@ -415,9 +416,10 @@ async def handle_call_tool(
                     total=progress_counter if 'progress_counter' in locals() else 0,
                 )
             raise RuntimeError(f"API error: {str(e)}")
-            
+
     else:
         raise ValueError(f"Unknown tool: {name}")
+
 
 async def main():
 
@@ -430,7 +432,8 @@ async def main():
                     server_name="mcp-server-perplexity",
                     server_version="0.1.2",
                     capabilities=server.get_capabilities(
-                        notification_options=NotificationOptions(tools_changed=True),
+                        notification_options=NotificationOptions(
+                            tools_changed=True),
                         experimental_capabilities={},
                     ),
                 ),
