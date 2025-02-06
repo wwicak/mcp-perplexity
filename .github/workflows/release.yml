@@ -24,7 +24,7 @@ jobs:
         python-version: "3.10"
 
     - name: Install Hatch
-      uses: pypa/hatch-action@v1
+      uses: pypa/hatch@install
       with:
         python-version: "3.10"
 
