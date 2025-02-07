@@ -25,6 +25,12 @@ build-backend = "hatchling.build"
 [project.scripts]
 mcp-perplexity = "mcp_perplexity:main"
 
+[tool.hatch.build]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/mcp_perplexity"]
+
 [tool.semantic_release]
 version_variable = ["pyproject.toml:version"]
 branch = "main"
