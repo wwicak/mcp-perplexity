@@ -88,7 +88,7 @@ Below is an example configuration in JSON format:
       "PERPLEXITY_MODEL": "sonar-pro",
       "PERPLEXITY_MODEL_ASK": "sonar-pro",
       "PERPLEXITY_MODEL_CHAT": "sonar-reasoning-pro",
-      "PERPLEXITY_DB_PATH": "path/to/custom.db"
+      "DB_PATH": "path/to/custom.db"
     }
   }
 }
@@ -100,6 +100,6 @@ Below is an example configuration in JSON format:
   - `PERPLEXITY_MODEL`: Default model for both tools
   - `PERPLEXITY_MODEL_ASK`: Overrides default model for `ask_perplexity` tool
   - `PERPLEXITY_MODEL_CHAT`: Overrides default model for `chat_perplexity` tool
-  - `PERPLEXITY_DB_PATH`: Custom path for SQLite chat history database (default: chats.db)
+  - `DB_PATH`: Custom path for SQLite chat history database (default: chats.db)
 - Consult the [Perplexity model docs](https://docs.perplexity.ai/guides/model-cards) for available models
 - Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE.
