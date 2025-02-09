@@ -27,20 +27,17 @@ MCP Server for the Perplexity API.
 
 ### Installation
 
-#### Installing via Smithery
-
-To install Perplexity MCP Server for Claude Desktop automatically via [Smithery](https://smithery.ai/server/@daniel-lxs/mcp-perplexity):
-
-```bash
-npx -y @smithery/cli install @daniel-lxs/mcp-perplexity --client claude
-```
-
 #### Prerequisites
 
 - [Python 3.10+](https://www.python.org/downloads/)
 - [uvx](https://docs.astral.sh/uv/getting-started/installation/) (recommended)
 
-**How to install uvx on Windows:**
+<details>
+<summary><h3>Installing uvx</h3></summary>
+
+<details>
+<summary><h4>Windows Installation</h4></summary>
+
 Open PowerShell as Administrator and run:
 
 ```powershell
@@ -49,8 +46,25 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 
 **Windows Installation Notes:**
 - Ensure Python 3.10+ is installed and added to PATH
-- The installation script will handle uvx setup
-- Your MCP client will manage package installation via the provided configuration
+
+</details>
+
+<details>
+<summary><h4>Unix Installation (Linux/MacOS)</h4></summary>
+
+Run the following command in your terminal:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+**Unix Installation Notes:**
+- The script will install uvx to ~/.cargo/bin by default
+- You may need to restart your terminal session after installation
+
+</details>
+
+</details>
 
 #### Configure your MCP Client
 
@@ -60,21 +74,28 @@ Below is an example configuration in JSON format:
 
 ```json
 "mcpServers": {
-  "Perplexity": {
+  "mcp-perplexity": {
     "command": "uvx",
     "args": [
       "mcp-perplexity"
     ],
     "env": {
       "PERPLEXITY_API_KEY": "your-perplexity-api-key",
-      "PERPLEXITY_MODEL": "sonar-pro"
+      "PERPLEXITY_MODEL": "sonar-pro",
+      "PERPLEXITY_MODEL_ASK": "sonar-pro",
+      "PERPLEXITY_MODEL_CHAT": "sonar-reasoning-pro",
+      "PERPLEXITY_DB_PATH": "path/to/custom.db"
     }
   }
 }
 ```
 
 **Important notes:**
-- Replace `"your-perplexity-api-key"` with your actual Perplexity API key.
-- You can also set `PERPLEXITY_MODEL_ASK` and `PERPLEXITY_MODEL_CHAT` to override `PERPLEXITY_MODEL` for the individual tools.
-- Consult your MCP client's documentation for details on where to place this configuration and any client-specific settings.
+- Replace `"your-perplexity-api-key"` with your actual Perplexity API key
+- Environment variables configuration:
+  - `PERPLEXITY_MODEL`: Default model for both tools
+  - `PERPLEXITY_MODEL_ASK`: Overrides default model for `ask_perplexity` tool
+  - `PERPLEXITY_MODEL_CHAT`: Overrides default model for `chat_perplexity` tool
+  - `PERPLEXITY_DB_PATH`: Custom path for SQLite chat history database (default: chats.db)
+- Consult the [Perplexity model docs](https://docs.perplexity.ai/guides/model-cards) for available models
 - Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE.
