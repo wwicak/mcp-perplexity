@@ -18,4 +18,11 @@ startCommand:
   commandFunction:
     # A function that produces the CLI command to start the MCP on stdio.
     |-
-    (config) => ({command: 'uvx', args: ['mcp-perplexity'], env: {PERPLEXITY_API_KEY: config.perplexityApiKey, PERPLEXITY_MODEL: config.perplexityModel}})
+    (config) => ({command: 'mcp-perplexity', args: [], env: {
+        PERPLEXITY_API_KEY: config.perplexityApiKey,
+        PERPLEXITY_MODEL: config.perplexityModel,
+    }})
+
+build:
+  dockerfile: Dockerfile
+  dockerBuildPath: .
