@@ -2,14 +2,11 @@
 
 
 
-## v0.3.1 (2025-02-10)
-
-### Fix
-
-* fix: package naming and version ([`cf29a51`](https://github.com/daniel-lxs/mcp-perplexity/commit/cf29a511a02a6c3e3f33e346e6dcfbab87925355))
-
-
 ## v0.3.0 (2025-02-10)
+
+### Build
+
+* build: Update hatch build configuration for package sources ([`84db846`](https://github.com/daniel-lxs/mcp-perplexity/commit/84db8465993c7a69359f0fce0fac1e3aa0aa7c48))
 
 ### Chore
 
@@ -32,6 +29,10 @@
 ### Feature
 
 * feat: Add configuration options for Perplexity model and chat database ([`1228278`](https://github.com/daniel-lxs/mcp-perplexity/commit/12282788e4f586e424eaaa1ca72fb9c8e9644085))
+
+### Fix
+
+* fix: package naming and version ([`cf29a51`](https://github.com/daniel-lxs/mcp-perplexity/commit/cf29a511a02a6c3e3f33e346e6dcfbab87925355))
 
 ### Refactor
 
