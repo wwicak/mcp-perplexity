@@ -2,6 +2,62 @@
 
 
 
+## v0.3.0 (2025-02-10)
+
+### Documentation
+
+* docs: Revamp README with comprehensive installation and configuration guide
+
+- Remove Smithery installation section
+- Add detailed uvx installation instructions for Windows and Unix systems
+- Enhance MCP client configuration documentation
+- Include more detailed environment variable explanations
+- Add link to Perplexity model documentation ([`b8a5a86`](https://github.com/daniel-lxs/mcp-perplexity/commit/b8a5a86bac65fdd0d7e0127ec8aa2c6a4e77b2a8))
+
+### Feature
+
+* feat: Add configuration options for Perplexity model and chat database ([`1228278`](https://github.com/daniel-lxs/mcp-perplexity/commit/12282788e4f586e424eaaa1ca72fb9c8e9644085))
+
+### Refactor
+
+* refactor: Update MCP start command and add Dockerfile configuration ([`56cebde`](https://github.com/daniel-lxs/mcp-perplexity/commit/56cebde6e35c2c04cf4cdfba6acf6494db4b7b28))
+
+* refactor: Enhance Dockerfile for development and runtime configuration ([`b06a8fa`](https://github.com/daniel-lxs/mcp-perplexity/commit/b06a8fa8f9c30e68e14a6174eb89481bcb4c0a5c))
+
+* refactor: Optimize Dockerfile and dependency management
+
+- Update Dockerfile to use multi-stage build with more efficient dependency installation
+- Improve virtual environment setup and package installation process
+- Add Hatch build configuration in pyproject.toml
+- Update uv.lock with latest dependency versions ([`c406e59`](https://github.com/daniel-lxs/mcp-perplexity/commit/c406e59a632e53a1a3d63f733dc6b472f5b97a5c))
+
+### Unknown
+
+* Update README.md ([`5864df2`](https://github.com/daniel-lxs/mcp-perplexity/commit/5864df292d962e27735807f4e83b2bfa89e19c17))
+
+* Update README.md ([`2a1f6ab`](https://github.com/daniel-lxs/mcp-perplexity/commit/2a1f6ab376d0f1148d8dd36890bb1155f2b6fbaf))
+
+
+## v0.2.1 (2025-02-06)
+
+### Chore
+
+* chore: Bump project version to 0.2.1 ([`862ed70`](https://github.com/daniel-lxs/mcp-perplexity/commit/862ed708aab049ac212c6b55f92825247682df19))
+
+* chore: Update release workflow permissions configuration
+
+- Move permissions to top-level workflow configuration
+- Add explicit write permissions for contents, actions, and id-token ([`d4e16f7`](https://github.com/daniel-lxs/mcp-perplexity/commit/d4e16f70506eb7d8c4498b42317f54ebe03ada73))
+
+### Documentation
+
+* docs: Update README with improved feature descriptions and model information ([`a92e563`](https://github.com/daniel-lxs/mcp-perplexity/commit/a92e563e1432d898e562dd88543aa665262cbf62))
+
+* docs: Update Glama.ai server badge URL in README ([`1565bf0`](https://github.com/daniel-lxs/mcp-perplexity/commit/1565bf01bc3b36e469b6b1ba4548f3d46dd84852))
+
+* docs: Add PyPI publish workflow badge to README ([`ad4de00`](https://github.com/daniel-lxs/mcp-perplexity/commit/ad4de0026e8c096fddfb62ac12cf20057fa5c27f))
+
+
 ## v0.2.0 (2025-02-06)
 
 ### Chore
