@@ -4,6 +4,10 @@
 
 ## v0.3.0 (2025-02-10)
 
+### Chore
+
+* chore: Bump project version to 0.3.0 ([`35c981b`](https://github.com/daniel-lxs/mcp-perplexity/commit/35c981b56e70648cc7b8021dd8b12ada567d18a8))
+
 ### Ci
 
 * ci: Enable manual workflow dispatch for PyPI package publishing ([`f8a48ad`](https://github.com/daniel-lxs/mcp-perplexity/commit/f8a48adbd504cf327e71243e7f77c499b199203f))
