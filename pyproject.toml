@@ -1,6 +1,6 @@
 [project]
 name = "mcp-perplexity"
-version = "0.3.0"
+version = "0.3.1"
 description = "MCP Server for the Perplexity API."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -26,9 +26,6 @@ build-backend = "hatchling.build"
 mcp-perplexity = "mcp_perplexity:main"
 
 [tool.hatch.build]
-sources = ["src"]
-
-[tool.hatch.build.targets.wheel]
 packages = ["src/mcp_perplexity"]
 
 [tool.semantic_release]
