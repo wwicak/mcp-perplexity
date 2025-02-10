@@ -2,6 +2,13 @@
 
 
 
+## v0.3.1 (2025-02-10)
+
+### Fix
+
+* fix: package naming and version ([`cf29a51`](https://github.com/daniel-lxs/mcp-perplexity/commit/cf29a511a02a6c3e3f33e346e6dcfbab87925355))
+
+
 ## v0.3.0 (2025-02-10)
 
 ### Chore
