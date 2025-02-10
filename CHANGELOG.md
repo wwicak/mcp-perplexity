@@ -4,6 +4,10 @@
 
 ## v0.3.0 (2025-02-10)
 
+### Ci
+
+* ci: Enable manual workflow dispatch for PyPI package publishing ([`f8a48ad`](https://github.com/daniel-lxs/mcp-perplexity/commit/f8a48adbd504cf327e71243e7f77c499b199203f))
+
 ### Documentation
 
 * docs: Revamp README with comprehensive installation and configuration guide
