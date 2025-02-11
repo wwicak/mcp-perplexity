@@ -2,9 +2,9 @@
 
 MCP Server for the Perplexity API.
 
-[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-perplexity)
+[![smithery badge](https://smithery.ai/badge/@daniel-lxs/mcp-perplexity)](https://smithery.ai/server/@daniel-lxs/mcp-perplexity) [![PyPI Publish](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml/badge.svg)](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml)
 
-[![PyPI Publish](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml/badge.svg)](https://github.com/daniel-lxs/mcp-perplexity/actions/workflows/pypi-publish.yml)
+
 
 <a href="https://glama.ai/mcp/servers/0nggjl0ohi">
   <img width="380" height="200" src="https://glama.ai/mcp/servers/0nggjl0ohi/badge" />
@@ -93,7 +93,6 @@ Below is an example configuration in JSON format:
   }
 }
 ```
-
 **Important notes:**
 - Replace `"your-perplexity-api-key"` with your actual Perplexity API key
 - Environment variables configuration:
@@ -102,4 +101,22 @@ Below is an example configuration in JSON format:
   - `PERPLEXITY_MODEL_CHAT`: Overrides default model for `chat_perplexity` tool
   - `DB_PATH`: Custom path for SQLite chat history database (default: chats.db)
 - Consult the [Perplexity model docs](https://docs.perplexity.ai/guides/model-cards) for available models
-- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE.
+- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE (Currently not working for MacOS).
+
+#### Using Smithery CLI
+
+Smithery is a CLI tool that allows you to easily add MCP servers to your Cursor IDE.
+
+Replace the values of the configuration object with your own values.
+
+```bash
+npx -y @smithery/cli@latest run @daniel-lxs/mcp-perplexity --config "{\"perplexityApiKey\":\"abc\",\"perplexityModel\":\"sonar-pro\", \"modelAsk\":\"sonar-pro\", \"modelChat\":\"sonar-reasoning-pro\", \"dbPath\":\"path/to/custom.db\"}"
+```
+
+- `perplexityApiKey`: `PERPLEXITY_API_KEY`
+- `perplexityModel`: `PERPLEXITY_MODEL`
+- `modelAsk`: `PERPLEXITY_MODEL_ASK`
+- `modelChat`: `PERPLEXITY_MODEL_CHAT`
+- `dbPath`: `DB_PATH`
+
+
