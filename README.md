@@ -36,11 +36,10 @@ MCP Server for the Perplexity API.
 - [Python 3.10+](https://www.python.org/downloads/)
 - [uvx](https://docs.astral.sh/uv/getting-started/installation/) (recommended)
 
-<details>
-<summary><h3>Installing uvx</h3></summary>
+#### Installing uvx
 
 <details>
-<summary><h4>Windows Installation</h4></summary>
+<summary><h5>Windows Installation</h5></summary>
 
 Open PowerShell as Administrator and run:
 
@@ -54,7 +53,7 @@ powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | ie
 </details>
 
 <details>
-<summary><h4>Unix Installation (Linux/MacOS)</h4></summary>
+<summary><h5>Unix Installation (Linux/MacOS)</h5></summary>
 
 Run the following command in your terminal:
 
@@ -118,5 +117,28 @@ npx -y @smithery/cli@latest run @daniel-lxs/mcp-perplexity --config "{\"perplexi
 - `modelAsk`: `PERPLEXITY_MODEL_ASK`
 - `modelChat`: `PERPLEXITY_MODEL_CHAT`
 - `dbPath`: `DB_PATH`
+
+
+## Usage
+
+### ask_perplexity
+
+The `ask_perplexity` tool is used for specific questions, this tool doesn't maintain a chat history, every request is a new chat.
+
+The tool will return a response from Perplexity AI using the `PERPLEXITY_MODEL_ASK` model if specified, otherwise it will use the `PERPLEXITY_MODEL` model.
+
+### chat_perplexity
+
+The `chat_perplexity` tool is used for ongoing conversations, this tool maintains a chat history.
+A chat is identified by a chat ID, this ID is returned by the tool when a new chat is created. Chat IDs look like this: `wild-horse-12`.
+
+This tool is useful for debugging, research, and any other task that requires a chat history.
+
+The tool will return a response from Perplexity AI using the `PERPLEXITY_MODEL_CHAT` model if specified, otherwise it will use the `PERPLEXITY_MODEL` model.
+
+
+
+
+
 
 
