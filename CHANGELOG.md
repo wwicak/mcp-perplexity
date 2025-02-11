@@ -2,6 +2,29 @@
 
 
 
+## v0.3.1 (2025-02-11)
+
+### Chore
+
+* chore: Improve installation scripts with enhanced error handling and user experience ([`0a55af5`](https://github.com/daniel-lxs/mcp-perplexity/commit/0a55af5b56588afb3ab015d0afb7dae08b13625c))
+
+* chore: Add cross-platform installation scripts for mcp-starter ([`729eb2a`](https://github.com/daniel-lxs/mcp-perplexity/commit/729eb2a3b7732d49db5780c50ec6f9fbe64b46b2))
+
+* chore: Bump project version to 0.3.2 ([`c269f1d`](https://github.com/daniel-lxs/mcp-perplexity/commit/c269f1d4ed1d332df22d4387ffc65fb29de60c26))
+
+### Documentation
+
+* docs: Update Windows and unix installation instructions ([`663d7c6`](https://github.com/daniel-lxs/mcp-perplexity/commit/663d7c6bbd6585f6c3e26b38eb077807a71f321c))
+
+* docs: Add usage section for ask_perplexity and chat_perplexity tools ([`f8037dc`](https://github.com/daniel-lxs/mcp-perplexity/commit/f8037dca9cbf4ea7ce013c34171067fe40958bda))
+
+* docs: Update README with Smithery CLI usage and MacOS note ([`449f172`](https://github.com/daniel-lxs/mcp-perplexity/commit/449f1720598fa91bb53e586f0d40789ae406f54e))
+
+### Fix
+
+* fix: Update database path environment variable name to match the documentation ([`9ee1ceb`](https://github.com/daniel-lxs/mcp-perplexity/commit/9ee1ceb88259cb28fd3d0f2913f8ee3b8e281172))
+
+
 ## v0.3.0 (2025-02-10)
 
 ### Build
