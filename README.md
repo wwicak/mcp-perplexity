@@ -46,12 +46,12 @@ We provide automated installation scripts that will:
 <details>
 <summary><h5>Windows Installation</h5></summary>
 
-1. Download the `install.bat` script
-2. Open Command Prompt or PowerShell
-3. Navigate to the directory containing the script
-4. Run:
-```batch
-install.bat
+1. Download the `install.ps1` script
+2. Open PowerShell as Administrator
+3. Allow script execution and run:
+```powershell
+Set-ExecutionPolicy RemoteSigned -Scope CurrentUser -Force
+.\install.ps1
 ```
 
 The script will:
@@ -70,7 +70,7 @@ The script will:
 3. Navigate to the directory containing the script
 4. Make the script executable and run it:
 ```bash
-chmod +x install.sh
+chmod +x install.sh  # Only needed if downloaded directly from browser
 ./install.sh
 ```
 
@@ -117,7 +117,7 @@ Below is an example configuration in JSON format:
   - `PERPLEXITY_MODEL_CHAT`: Overrides default model for `chat_perplexity` tool
   - `DB_PATH`: Custom path for SQLite chat history database (default: chats.db)
 - Consult the [Perplexity model docs](https://docs.perplexity.ai/guides/model-cards) for available models
-- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE (Currently not working for MacOS).
+- Use the [mcp-starter](https://github.com/daniel-lxs/mcp-starter) script to easily add this MCP server to Cursor IDE.
 
 #### Using Smithery CLI
 
