@@ -1,4 +1,5 @@
 #!/bin/bash
+set -e  # Exit immediately on error
 
 # Colors for output
 RED='\033[0;31m'
@@ -9,9 +10,14 @@ NC='\033[0m'
 echo -e "${BLUE}MCP-Starter Installation Script${NC}"
 echo "--------------------------------"
 
-# Check if curl is installed
+# Check prerequisites
 if ! command -v curl &> /dev/null; then
-    echo -e "${RED}Error: curl is not installed. Please install curl first.${NC}"
+    echo -e "${RED}Error: curl is required but not installed.${NC}"
+    exit 1
+fi
+
+if ! command -v jq &> /dev/null; then
+    echo -e "${RED}Error: jq is required but not installed.${NC}"
     exit 1
 fi
 
@@ -19,7 +25,14 @@ fi
 install_uvx() {
     if ! command -v uvx &> /dev/null; then
         echo -e "${BLUE}Installing uvx...${NC}"
-        curl -LsSf https://github.com/astral-sh/uv/releases/download/0.1.24/uv-installer.sh | sh
+        curl -LsSf https://astral.sh/uv/install.sh | sh
+        export PATH="$HOME/.local/bin:$PATH"
+        
+        # Verify installation
+        if ! command -v uvx &> /dev/null; then
+            echo -e "${RED}Error: uvx installation failed. Check ~/.local/bin/uvx exists${NC}"
+            exit 1
+        fi
     else
         echo -e "${GREEN}uvx is already installed${NC}"
     fi
@@ -32,12 +45,8 @@ download_mcp_starter() {
     # Determine system architecture
     ARCH=$(uname -m)
     case "$ARCH" in
-        x86_64)
-            ARCH="amd64"
-            ;;
-        aarch64)
-            ARCH="arm64"
-            ;;
+        x86_64) ARCH="amd64" ;;
+        aarch64) ARCH="arm64" ;;
         *)
             echo -e "${RED}Unsupported architecture: $ARCH${NC}"
             exit 1
@@ -49,20 +58,24 @@ download_mcp_starter() {
     
     # Create temporary directory
     TMP_DIR=$(mktemp -d)
+    trap 'rm -rf "$TMP_DIR"' EXIT  # Cleanup on exit
     
     # Download the latest release
     DOWNLOAD_URL="https://github.com/daniel-lxs/mcp-starter/releases/latest/download/mcp-starter-${OS}-${ARCH}"
-    curl -L "$DOWNLOAD_URL" -o "$TMP_DIR/mcp-starter"
+    if ! curl -L "$DOWNLOAD_URL" -o "$TMP_DIR/mcp-starter"; then
+        echo -e "${RED}Error: Failed to download mcp-starter${NC}"
+        exit 1
+    fi
     
     # Make it executable
     chmod +x "$TMP_DIR/mcp-starter"
     
-    # Move to a permanent location
+    # Move to permanent location
     mkdir -p "$HOME/.local/bin"
-    mv "$TMP_DIR/mcp-starter" "$HOME/.local/bin/"
-    
-    # Clean up
-    rm -rf "$TMP_DIR"
+    if ! mv "$TMP_DIR/mcp-starter" "$HOME/.local/bin/"; then
+        echo -e "${RED}Error: Failed to install mcp-starter${NC}"
+        exit 1
+    fi
     
     echo -e "${GREEN}mcp-starter has been installed to $HOME/.local/bin/mcp-starter${NC}"
 }
@@ -127,4 +140,6 @@ install_uvx
 download_mcp_starter
 create_config
 
-echo -e "${GREEN}Installation complete!${NC}" 
+echo -e "${GREEN}Installation complete!${NC}"
+echo -e "${BLUE}Ensure $HOME/.local/bin is in your PATH:${NC}"
+echo -e "export PATH=\"\$HOME/.local/bin:\$PATH\"" 
