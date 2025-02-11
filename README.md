@@ -36,38 +36,55 @@ MCP Server for the Perplexity API.
 - [Python 3.10+](https://www.python.org/downloads/)
 - [uvx](https://docs.astral.sh/uv/getting-started/installation/) (recommended)
 
-#### Installing uvx
+#### Automated Installation
+
+We provide automated installation scripts that will:
+1. Install uvx if not present
+2. Download and install mcp-starter
+3. Guide you through creating the configuration file
 
 <details>
 <summary><h5>Windows Installation</h5></summary>
 
-Open PowerShell as Administrator and run:
-
-```powershell
-powershell -ExecutionPolicy ByPass -c "irm https://astral.sh/uv/install.ps1 | iex"
+1. Download the `install.bat` script
+2. Open Command Prompt or PowerShell
+3. Navigate to the directory containing the script
+4. Run:
+```batch
+install.bat
 ```
 
-**Windows Installation Notes:**
-- Ensure Python 3.10+ is installed and added to PATH
-
+The script will:
+- Check for required dependencies (curl, PowerShell)
+- Install uvx if not present
+- Install mcp-starter to `%USERPROFILE%\.local\bin`
+- Create a configuration file at `%USERPROFILE%\.config\mcp-starter\config.json`
+- Prompt for your Perplexity API key and model preferences
 </details>
 
 <details>
 <summary><h5>Unix Installation (Linux/MacOS)</h5></summary>
 
-Run the following command in your terminal:
-
+1. Download the `install.sh` script
+2. Open Terminal
+3. Navigate to the directory containing the script
+4. Make the script executable and run it:
 ```bash
-curl -LsSf https://astral.sh/uv/install.sh | sh
+chmod +x install.sh
+./install.sh
 ```
 
-**Unix Installation Notes:**
-- The script will install uvx to ~/.cargo/bin by default
-- You may need to restart your terminal session after installation
-
+The script will:
+- Check for required dependencies (curl)
+- Install uvx if not present
+- Install mcp-starter to `$HOME/.local/bin`
+- Create a configuration file at `$HOME/.config/mcp-starter/config.json`
+- Prompt for your Perplexity API key and model preferences
 </details>
 
-</details>
+#### Manual Installation
+
+If you prefer to install manually, follow these steps:
 
 #### Configure your MCP Client
 
