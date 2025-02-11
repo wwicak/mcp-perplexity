@@ -20,7 +20,7 @@ PERPLEXITY_MODEL_CHAT = os.getenv("PERPLEXITY_MODEL_CHAT")
 PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
 
 haikunator = Haikunator()
-DB_PATH = os.getenv("PERPLEXITY_DB_PATH", "chats.db")
+DB_PATH = os.getenv("DB_PATH", "chats.db")
 SYSTEM_PROMPT = """You are an expert assistant providing accurate answers to technical questions. 
 Your responses must:
 1. Be based on the most relevant web sources
