@@ -82,10 +82,6 @@ The script will:
 - Prompt for your Perplexity API key and model preferences
 </details>
 
-#### Manual Installation
-
-If you prefer to install manually, follow these steps:
-
 #### Configure your MCP Client
 
 To use this MCP server, you need to configure your MCP client to connect to it. The configuration method will vary depending on your specific client.
