@@ -2,7 +2,28 @@
 
 
 
-## v0.3.1 (2025-02-11)
+## v0.3.4 (2025-02-13)
+
+### Chore
+
+* chore: Bump project version to 0.3.4 ([`44c305b`](https://github.com/daniel-lxs/mcp-perplexity/commit/44c305be590893306143d56082bfb398212c2f44))
+
+### Documentation
+
+* docs: Update README.md ([`31c47e5`](https://github.com/daniel-lxs/mcp-perplexity/commit/31c47e5c15eb29ba2f062bee1820a94227b9b4ca))
+
+### Fix
+
+* fix: Simplify Windows architecture detection in install script since the script is only available for amd64 ([`2ce8977`](https://github.com/daniel-lxs/mcp-perplexity/commit/2ce8977a4bd60d09d57d2bbe3bb5b96cd4474140))
+
+### Unknown
+
+* Merge pull request #4 from daniel-lxs/fix_windows_install
+
+fix: Simplify Windows architecture detection in install script since … ([`18246c2`](https://github.com/daniel-lxs/mcp-perplexity/commit/18246c2085a98c6d7650c232af43eed008831e8e))
+
+
+## v0.3.3 (2025-02-11)
 
 ### Chore
 
