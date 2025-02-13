@@ -65,18 +65,10 @@ if (!(Test-Path $installDir)) {
     New-Item -ItemType Directory -Path $installDir -Force
 }
 
-# Determine architecture
-$osArchitecture = (Get-WmiObject -Class Win32_OperatingSystem).OSArchitecture
-if ($osArchitecture -like "*64-bit*") {
-    $arch = "amd64"
-} else {
-    $arch = "386"
-}
-
 # Download mcp-starter
 Write-Host "Downloading mcp-starter..."
 try {
-    $downloadUrl = "https://github.com/daniel-lxs/mcp-starter/releases/latest/download/mcp-starter-windows-$arch.exe"
+    $downloadUrl = "https://github.com/daniel-lxs/mcp-starter/releases/latest/download/mcp-starter-windows-amd64.exe"
     Invoke-WebRequest -Uri $downloadUrl -OutFile (Join-Path $installDir "mcp-starter.exe")
     Write-Host "mcp-starter has been installed to $installDir\mcp-starter.exe"
 }
