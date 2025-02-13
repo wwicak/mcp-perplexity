@@ -16,6 +16,8 @@ MCP Server for the Perplexity API.
 
 - **ask_perplexity**: Request expert programming assistance through Perplexity. Focuses on coding solutions, error debugging, and technical explanations. Returns responses with source citations and alternative suggestions.
 - **chat_perplexity**: Maintains ongoing conversations with Perplexity AI. Creates new chats or continues existing ones with full history context. Returns chat ID for future continuation.
+- **list_chats_perplexity**: Lists all available chat conversations with Perplexity AI. Returns chat IDs, titles, and creation dates (displayed in relative time format, e.g., "5 minutes ago", "2 days ago"). Results are paginated with 50 chats per page.
+- **read_chat_perplexity**: Retrieves the complete conversation history for a specific chat. Returns the full chat history with all messages and their timestamps. No API calls are made to Perplexity - this only reads from local storage.
 
 ## Key Features
 
@@ -148,6 +150,12 @@ A chat is identified by a chat ID, this ID is returned by the tool when a new ch
 This tool is useful for debugging, research, and any other task that requires a chat history.
 
 The tool will return a response from Perplexity AI using the `PERPLEXITY_MODEL_CHAT` model if specified, otherwise it will use the `PERPLEXITY_MODEL` model.
+
+### list_chats_perplexity
+Lists all available chat conversations.  It returns a paginated list of chats, showing the chat ID, title, and creation time (in relative format).  You can specify the page number using the `page` argument (defaults to 1, with 50 chats per page).
+
+### read_chat_perplexity
+Retrieves the complete conversation history for a given `chat_id`.  This tool returns all messages in the chat, including timestamps and roles (user or assistant). This tool does *not* make any API calls to Perplexity; it only reads from the local database.
 
 
 

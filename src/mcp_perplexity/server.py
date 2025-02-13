@@ -2,6 +2,8 @@ import os
 from textwrap import dedent
 import json
 from collections import deque
+from datetime import datetime
+
 
 import httpx
 import mcp.server.stdio
@@ -10,7 +12,6 @@ from mcp.server import NotificationOptions, Server
 from mcp.server.models import InitializationOptions
 from haikunator import Haikunator
 import sqlite3
-from datetime import datetime
 import uuid
 
 PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
@@ -122,10 +123,46 @@ async def handle_list_tools() -> list[types.Tool]:
                     },
                     "title": {
                         "type": "string",
-                        "description": "Optional title for new chat"
+                        "description": "Title of the chat"
                     }
                 },
-                "required": ["message"]
+                "required": ["title", "message"]
+            },
+        ),
+        types.Tool(
+            name="list_chats_perplexity",
+            description=dedent("""
+                Lists all available chat conversations with Perplexity AI.
+                Returns chat IDs, titles, and creation dates.
+                Results are paginated with 50 chats per page.
+                """),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "page": {
+                        "type": "integer",
+                        "description": "Page number (defaults to 1)",
+                        "minimum": 1
+                    }
+                }
+            },
+        ),
+        types.Tool(
+            name="read_chat_perplexity",
+            description=dedent("""
+                Retrieves the complete conversation history for a specific chat.
+                Returns the full chat history with all messages and their timestamps.
+                No API calls are made to Perplexity - this only reads from local storage.
+                """),
+            inputSchema={
+                "type": "object",
+                "properties": {
+                    "chat_id": {
+                        "type": "string",
+                        "description": "ID of the chat to retrieve"
+                    }
+                },
+                "required": ["chat_id"]
             },
         )
     ]
@@ -161,6 +198,53 @@ def get_chat_history(chat_id):
     history = [{"role": row[0], "content": row[1]} for row in c.fetchall()]
     conn.close()
     return history
+
+
+def get_relative_time(timestamp_str):
+    try:
+        # Parse the timestamp string to datetime object - timestamps are stored in UTC
+        utc_dt = datetime.strptime(
+            timestamp_str, "%Y-%m-%d %H:%M:%S").replace(tzinfo=None)
+        # Get current time in UTC for comparison
+        now_utc = datetime.utcnow()
+
+        # Calculate the time difference
+        diff = now_utc - utc_dt
+        seconds = diff.total_seconds()
+
+        # For future dates or dates too far in the future/past, show the actual date
+        if abs(seconds) > 31536000:  # More than a year
+            # Convert to local time for display
+            local_dt = utc_dt + (datetime.now() - datetime.utcnow())
+            return local_dt.strftime("%Y-%m-%d %H:%M:%S")
+
+        if seconds < 0:  # Future dates within a year
+            seconds = abs(seconds)
+            prefix = "in "
+            suffix = ""
+        else:
+            prefix = ""
+            suffix = " ago"
+
+        if seconds < 60:
+            return "just now"
+        elif seconds < 3600:
+            minutes = int(seconds / 60)
+            return f"{prefix}{minutes} minute{'s' if minutes != 1 else ''}{suffix}"
+        elif seconds < 86400:
+            hours = int(seconds / 3600)
+            return f"{prefix}{hours} hour{'s' if hours != 1 else ''}{suffix}"
+        elif seconds < 604800:  # 7 days
+            days = int(seconds / 86400)
+            return f"{prefix}{days} day{'s' if days != 1 else ''}{suffix}"
+        elif seconds < 2592000:  # 30 days
+            weeks = int(seconds / 604800)
+            return f"{prefix}{weeks} week{'s' if weeks != 1 else ''}{suffix}"
+        else:  # less than a year
+            months = int(seconds / 2592000)
+            return f"{prefix}{months} month{'s' if months != 1 else ''}{suffix}"
+    except Exception:
+        return timestamp_str  # Return original string if parsing fails
 
 
 @server.call_tool()
@@ -416,6 +500,102 @@ async def handle_call_tool(
                     total=progress_counter if 'progress_counter' in locals() else 0,
                 )
             raise RuntimeError(f"API error: {str(e)}")
+
+    elif name == "list_chats_perplexity":
+        page = arguments.get("page", 1)
+        page_size = 50
+        offset = (page - 1) * page_size
+
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        # Get total count for pagination info
+        c.execute("SELECT COUNT(*) FROM chats")
+        total_chats = c.fetchone()[0]
+        total_pages = (total_chats + page_size - 1) // page_size
+
+        # Get paginated chats with their latest message
+        c.execute('''
+            SELECT 
+                c.id,
+                c.title,
+                c.created_at,
+                (SELECT COUNT(*) FROM messages m WHERE m.chat_id = c.id) as message_count
+            FROM chats c
+            ORDER BY c.created_at DESC
+            LIMIT ? OFFSET ?
+        ''', (page_size, offset))
+
+        chats = c.fetchall()
+        conn.close()
+
+        # Format the response
+        header = (
+            f"Page {page} of {total_pages}\n"
+            f"Total chats: {total_chats}\n\n"
+            f"{'=' * 40}\n"
+        )
+
+        chat_list = []
+        for chat_id, title, created_at, message_count in chats:
+            relative_time = get_relative_time(created_at)
+            chat_list.append(
+                f"Chat ID: {chat_id}\n"
+                f"Title: {title or 'Untitled'}\n"
+                f"Created: {relative_time}\n"
+                f"Messages: {message_count}"
+            )
+
+        response_text = header + "\n\n".join(chat_list)
+
+        return [types.TextContent(type="text", text=response_text)]
+
+    elif name == "read_chat_perplexity":
+        chat_id = arguments["chat_id"]
+
+        conn = sqlite3.connect(DB_PATH)
+        c = conn.cursor()
+
+        # Get chat info
+        c.execute("SELECT title, created_at FROM chats WHERE id = ?", (chat_id,))
+        chat_info = c.fetchone()
+
+        if not chat_info:
+            conn.close()
+            raise ValueError(f"Chat with ID {chat_id} not found")
+
+        title, created_at = chat_info
+
+        # Get chat history with timestamps
+        c.execute('''
+            SELECT role, content, timestamp 
+            FROM messages 
+            WHERE chat_id = ? 
+            ORDER BY timestamp
+        ''', (chat_id,))
+
+        messages = c.fetchall()
+        conn.close()
+
+        # Format the response
+        chat_header = (
+            f"Chat ID: {chat_id}\n"
+            f"Title: {title or 'Untitled'}\n"
+            f"Created: {created_at}\n"
+            f"Messages: {len(messages)}\n\n"
+            f"{'=' * 40}\n\n"
+        )
+
+        message_history = []
+        for role, content, timestamp in messages:
+            role_display = "You" if role == "user" else "Assistant"
+            message_history.append(
+                f"[{timestamp}] {role_display}:\n{content}\n"
+            )
+
+        response_text = chat_header + "\n".join(message_history)
+
+        return [types.TextContent(type="text", text=response_text)]
 
     else:
         raise ValueError(f"Unknown tool: {name}")
