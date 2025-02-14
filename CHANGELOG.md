@@ -2,6 +2,35 @@
 
 
 
+## v0.4.0 (2025-02-14)
+
+### Chore
+
+* chore: Update semantic release configuration and version tracking ([`7cf3678`](https://github.com/daniel-lxs/mcp-perplexity/commit/7cf3678ec71de3bfafc7b309d293b3fa8a628e36))
+
+* chore: Bump version to 0.4.0 for new chat functionality release ([`001f268`](https://github.com/daniel-lxs/mcp-perplexity/commit/001f268a4bc9305adc0845172b025deff686bc6f))
+
+### Feature
+
+* feat: Add list and read chat functionality for Perplexity conversations
+
+- Implement `list_chats_perplexity` to retrieve paginated chat list with details
+- Add `read_chat_perplexity` to fetch complete chat history from local storage
+- Update README.md with documentation for new chat-related tools
+- Introduce relative time formatting for chat creation timestamps ([`8aeb0ff`](https://github.com/daniel-lxs/mcp-perplexity/commit/8aeb0ff32cb143c6dad82d9edfdbee71e8cd8ada))
+
+### Unknown
+
+* Merge pull request #5 from daniel-lxs/read_list_chats
+
+Add new tools for listing and reading existing chats.
+
+Changes:
+
+Adds tool to list chats list_chat_perplexity with relative timestamps to help models without access to the current date and time find chats. For example asking the model to check yesterdays chat.
+Adds a tool to read existing chats by using the chat ID. ([`9c9618d`](https://github.com/daniel-lxs/mcp-perplexity/commit/9c9618d3cb4accf396338e606703255558a41e81))
+
+
 ## v0.3.4 (2025-02-13)
 
 ### Chore
