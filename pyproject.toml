@@ -34,17 +34,21 @@ version_variable = ["__init__.py:__version__"]
 branch = "main"
 upload_to_pypi = false
 upload_to_release = true
+build_command = "hatch build"
+changelog_components = "default"
 changelog_sections = [
-    { "type" = "feat", "section" = "What's New", "hidden" = false },
-    { "type" = "fix", "section" = "Bug Fixes", "hidden" = false },
-    { "type" = "perf", "section" = "Performance Improvements", "hidden" = false },
-    { "type" = "docs", "section" = "Documentation", "hidden" = false },
-    { "type" = "refactor", "section" = "Code Refactoring", "hidden" = false },
-    { "type" = "BREAKING", "section" = "Breaking Changes", "hidden" = false },
-    { "type" = "test", "section" = "Testing", "hidden" = true },
-    { "type" = "build", "section" = "Build System", "hidden" = true },
-    { "type" = "style", "section" = "Code Style", "hidden" = true },
-    { "type" = "chore", "section" = "Maintenance", "hidden" = true },
-    { "type" = "other", "section" = "Other", "hidden" = true }
+    { type = "feat", section = "What's New", hidden = false },
+    { type = "fix", section = "Bug Fixes", hidden = false },
+    { type = "perf", section = "Performance Improvements", hidden = false },
+    { type = "docs", section = "Documentation", hidden = false },
+    { type = "refactor", section = "Code Refactoring", hidden = false },
+    { type = "BREAKING", section = "Breaking Changes", hidden = false },
+    { type = "test", section = "Testing", hidden = true },
+    { type = "build", section = "Build System", hidden = true },
+    { type = "style", section = "Code Style", hidden = true },
+    { type = "chore", section = "Maintenance", hidden = true },
+    { type = "ci", section = "CI/CD", hidden = true }
 ]
-default_section = "Other"
+commit_parser = "angular"
+major_on_zero = false
+tag_format = "v{version}"
