@@ -18,7 +18,7 @@ PERPLEXITY_API_KEY = os.getenv("PERPLEXITY_API_KEY")
 PERPLEXITY_MODEL = os.getenv("PERPLEXITY_MODEL")
 PERPLEXITY_MODEL_ASK = os.getenv("PERPLEXITY_MODEL_ASK")
 PERPLEXITY_MODEL_CHAT = os.getenv("PERPLEXITY_MODEL_CHAT")
-PERPLEXITY_API_BASE_URL = "https://api.perplexity.ai"
+PERPLEXITY_API_BASE_URL = "https://openrouter.ai/api/v1"
 
 haikunator = Haikunator()
 DB_PATH = os.getenv("DB_PATH", "chats.db")
