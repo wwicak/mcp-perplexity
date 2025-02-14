@@ -1,6 +1,6 @@
 [project]
 name = "mcp-perplexity"
-version = "0.3.4"
+version = "0.4.0"
 description = "MCP Server for the Perplexity API."
 readme = "README.md"
 requires-python = ">=3.10"
@@ -30,7 +30,21 @@ packages = ["src/mcp_perplexity"]
 sources = ["src"]
 
 [tool.semantic_release]
-version_variable = ["pyproject.toml:version"]
+version_variable = ["__init__.py:__version__"]
 branch = "main"
 upload_to_pypi = false
 upload_to_release = true
+changelog_sections = [
+    { "type" = "feat", "section" = "What's New", "hidden" = false },
+    { "type" = "fix", "section" = "Bug Fixes", "hidden" = false },
+    { "type" = "perf", "section" = "Performance Improvements", "hidden" = false },
+    { "type" = "docs", "section" = "Documentation", "hidden" = false },
+    { "type" = "refactor", "section" = "Code Refactoring", "hidden" = false },
+    { "type" = "BREAKING", "section" = "Breaking Changes", "hidden" = false },
+    { "type" = "test", "section" = "Testing", "hidden" = true },
+    { "type" = "build", "section" = "Build System", "hidden" = true },
+    { "type" = "style", "section" = "Code Style", "hidden" = true },
+    { "type" = "chore", "section" = "Maintenance", "hidden" = true },
+    { "type" = "other", "section" = "Other", "hidden" = true }
+]
+default_section = "Other"
